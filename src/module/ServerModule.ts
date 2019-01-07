@@ -145,9 +145,16 @@ export class ServerModule extends Module {
     }
   }
 
+  getAddressInfoHuman(add:net.AddressInfo|string):string {
+    if(typeof add === typeof '') return add as string;
+    let { port, address } = add as net.AddressInfo;
+    return `${address}:${port}`;
+  }
+
   onServerStarted():void {
     //Confirm the server actually started
-    this.logger.info(`HTTP Server Started on ${this.http.address()}`);
+    let address = this.getAddressInfoHuman(this.http.address());
+    this.logger.info(`HTTP Server Started on ${address}`);
   }
 
   onServerError(e:Error):void {
@@ -156,7 +163,9 @@ export class ServerModule extends Module {
   }
 
   onSecureStarted():void {
-    this.logger.info(`HTTPS Server Started on ${this.https.address()}`);
+    //Confirm the server actually started
+    let address = this.getAddressInfoHuman(this.https.address());
+    this.logger.info(`HTTPS Server Started on ${address}`);
   }
 
   onSecureServerError(e:Error):void {
