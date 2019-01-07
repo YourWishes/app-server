@@ -141,17 +141,22 @@ export class ServerModule extends Module {
       this.https.listen({
         ip: this.ip,
         port: this.httpsPort
-      });
+      }, () => this.onSecureStarted());
     }
   }
 
   onServerStarted():void {
-
+    //Confirm the server actually started
+    this.logger.info(`HTTP Server Started on ${this.http.address()}`);
   }
 
   onServerError(e:Error):void {
     this.logger.severe('HTTP Error');
     this.logger.severe(e);
+  }
+
+  onSecureStarted():void {
+    this.logger.info(`HTTPS Server Started on ${this.https.address()}`);
   }
 
   onSecureServerError(e:Error):void {

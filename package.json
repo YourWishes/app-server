@@ -1,6 +1,6 @@
 {
   "name": "@yourwishes/app-server",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Server Module for my App framework.",
   "main": "dist/index.js",
   "scripts": {
