@@ -23,6 +23,7 @@
 
 import { Module } from '@yourwishes/app-base';
 import { IServerApp } from './../app/';
+import { APIRequest, APIHandler, sendResponse, RESPONSE_INTERNAL_ERROR, APIResponse } from './../api/';
 
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
@@ -32,7 +33,8 @@ import * as net from 'net';
 import * as path from 'path';
 import * as fs from 'fs';
 
-import { Express } from 'express';
+import { Express, Router, Request, Response, NextFunction } from 'express';
+
 
 export const CONFIG_IP = 'server.ip';
 export const CONFIG_PORT = 'server.port';
@@ -41,12 +43,18 @@ export const CONFIG_SSL_KEY = `${CONFIG_SSL}.key`;
 export const CONFIG_SSL_CERT = `${CONFIG_SSL}.cert`;
 export const CONFIG_HTTPS_PORT = `${CONFIG_SSL}.port`;
 
+
 export const isValidPort = port => !isNaN(port) && port > -1 && port < 65536;
 
 export class ServerModule extends Module {
+  //Server
   express:Express;
   http:http.Server;
   https:https.Server;
+
+  //API
+  apiRouter:Router;
+  apiHandlers:APIHandler[]=[];
 
   //Configurations
   ip:string = null;
@@ -61,6 +69,37 @@ export class ServerModule extends Module {
 
   constructor(app:IServerApp) {
     super(app);
+
+    //Create my express wrapper.
+    this.express = express();
+
+    //Setup express to support JSON Encoded bodies
+    this.express.use(bodyParser.json({
+      type:'application/json'
+    }));
+
+    //Allow URL Encoded bodies
+    this.express.use(bodyParser.urlencoded({
+      extended: true
+    }));
+
+    //Create our API Router
+    this.apiRouter = express.Router();
+    this.apiRouter.all('*', (req,res,next) => this.onAPIRequest(req,res,next));
+    this.express.use(this.apiRouter);
+  }
+
+  addAPIHandler(handler:APIHandler) {
+    if(!handler) throw new Error("Invalid API Handler.");
+    if(this.apiHandlers.indexOf(handler) !== -1) return;
+    this.apiHandlers.push(handler);
+  }
+
+  removeAPIHandler(handler:APIHandler) {
+    if(!handler) throw new Error("Invalid API Handler");
+    let index = this.apiHandlers.indexOf(handler);
+    if(index === -1) return;
+    this.apiHandlers.splice(index, 1);
   }
 
   async init():Promise<void> {
@@ -102,20 +141,6 @@ export class ServerModule extends Module {
       this.ssl = true;
     }
 
-
-    //Create my express wrapper.
-    this.express = express();
-
-    //Setup express to support JSON Encoded bodies
-    this.express.use(bodyParser.json({
-      type:'application/json'
-    }));
-
-    //Allow URL Encoded bodies
-    this.express.use(bodyParser.urlencoded({
-      extended: true
-    }));
-
     //Create a HTTP Server
     this.http = http.createServer(this.express);
     this.http.on('error', (e:Error) => this.onServerError(e));
@@ -145,12 +170,14 @@ export class ServerModule extends Module {
     }
   }
 
+
   getAddressInfoHuman(add:net.AddressInfo|string):string {
     if(typeof add === typeof '') return add as string;
     let { port, address } = add as net.AddressInfo;
     return `${address}:${port}`;
   }
 
+  /*** Events ****/
   onServerStarted():void {
     //Confirm the server actually started
     let address = this.getAddressInfoHuman(this.http.address());
@@ -171,5 +198,37 @@ export class ServerModule extends Module {
   onSecureServerError(e:Error):void {
     this.logger.severe('HTTPS Error');
     this.logger.severe(e);
+  }
+
+  getAPIHandlerFromMethodAndPath(method:string, path:string) {
+    //Find if there's any matching request handler
+    for(let i = 0; i < this.apiHandlers.length; i++) {
+      let handler = this.apiHandlers[i];
+      if(!handler.hasMethod(method)) continue;
+      if(!handler.hasPath(path)) continue;
+      return handler;
+    }
+    return null;
+  }
+
+  async onAPIRequest(req:Request,res:Response, next:NextFunction) {
+    let { method, path } = req;
+
+    let handler = this.getAPIHandlerFromMethodAndPath(method, path);
+    if(!handler) return next();
+
+    //This matches, get the result
+    let request = new APIRequest(this, method, path, req);
+    let result:APIResponse;
+    try {
+      result = await handler.onRequest(request);
+    } catch(e) {
+      this.logger.severe(`Failed to handle API Request!`);
+      this.logger.severe(e);
+
+      //Create a generic error response
+      result = { code: RESPONSE_INTERNAL_ERROR, data: `An internal error occured, please try again later.` };
+    }
+    return sendResponse(result,res);
   }
 }

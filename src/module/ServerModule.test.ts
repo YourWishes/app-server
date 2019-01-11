@@ -2,8 +2,9 @@ import { App } from '@yourwishes/app-base';
 import { IServerApp } from './../app/';
 import { ServerModule } from './ServerModule';
 
+import { APIHandler, RESPONSE_OK, APIRequest, APIResponse } from './../api/';
+
 import * as fs from 'fs';
-import * as http from 'http';
 
 class DummyApp extends App implements IServerApp {
   server:ServerModule;
@@ -12,6 +13,16 @@ class DummyApp extends App implements IServerApp {
     super();
 
     this.server = new ServerModule(this);
+  }
+}
+
+class DummyAPIHAndler extends APIHandler {
+  constructor(method:string[]|string='GET', path:string[]|string='/test') {
+    super(method, path);
+  }
+
+  async onRequest(request:APIRequest):Promise<APIResponse> {
+    return { code: RESPONSE_OK, data: 'Testing'  }
   }
 }
 
@@ -289,4 +300,103 @@ describe('start', () => {
 
     module.http[`listen${''}`] = originalListen;
   });
+});
+
+describe('addAPIHandler', () => {
+  let app = new DummyApp();
+
+  it('should require a real APIHandler', () => {
+    let server = new ServerModule(app);
+    let handler = new DummyAPIHAndler();
+    expect(() => server.addAPIHandler(null)).toThrow();
+    expect(() => server.addAPIHandler(handler)).not.toThrow();
+  });
+
+  it('should add an API Handler to the list', () => {
+    let server = new ServerModule(app);
+    let handler = new DummyAPIHAndler();
+    expect(server.apiHandlers).not.toContain(handler);
+    server.addAPIHandler(handler);
+    expect(server.apiHandlers).toContain(handler);
+  });
+
+  it('should not add it to the list twice', () => {
+    let server = new ServerModule(app);
+    let handler = new DummyAPIHAndler();
+    expect(server.apiHandlers).not.toContain(handler);
+    server.addAPIHandler(handler);
+    expect(server.apiHandlers).toContain(handler);
+    expect(server.apiHandlers).toHaveLength(1);
+    expect(() => server.addAPIHandler(handler)).not.toThrow();
+    expect(server.apiHandlers).toHaveLength(1);
+  });
+});
+
+describe('removeAPIHandler', () => {
+  let app = new DummyApp();
+
+  it('should require a real APIHandler', () => {
+    let server = new ServerModule(app);
+    let handler = new DummyAPIHAndler();
+    expect(() => server.removeAPIHandler(null)).toThrow();
+    expect(() => server.removeAPIHandler(handler)).not.toThrow();
+  });
+
+  it('should remove an item', () => {
+    let server = new ServerModule(app);
+    let handler1 = new DummyAPIHAndler();
+    let handler2 = new DummyAPIHAndler();
+    server.addAPIHandler(handler1);
+    server.addAPIHandler(handler2);
+    expect(server.apiHandlers).toHaveLength(2);
+    expect(server.apiHandlers).toContain(handler1);
+    expect(server.apiHandlers).toContain(handler2);
+
+    server.removeAPIHandler(handler1);
+    expect(server.apiHandlers).toHaveLength(1);
+    expect(server.apiHandlers).not.toContain(handler1);
+    expect(server.apiHandlers).toContain(handler2);
+
+    server.removeAPIHandler(handler1);
+    expect(server.apiHandlers).toHaveLength(1);
+    expect(server.apiHandlers).not.toContain(handler1);
+    expect(server.apiHandlers).toContain(handler2);
+  });
+});
+
+describe('getAPIHandlerFromMethodAndPath', () => {
+  let app = new DummyApp();
+  let server = new ServerModule(app);
+  let handler1 = new DummyAPIHAndler('GET', '/test1');
+  let handler2 = new DummyAPIHAndler('GET', ['/test2', '/test2a']);
+  let handler3 = new DummyAPIHAndler(['GET','POST'], '/test3');
+  let handler4 = new DummyAPIHAndler(['GET','POST'], ['/test4', '/test4a']);
+  [handler1,handler2,handler3,handler4].forEach(e => server.addAPIHandler(e));
+
+  it('should return the correct handler', () => {
+    expect(server.getAPIHandlerFromMethodAndPath('GET', '/test1')).toEqual(handler1);
+
+    expect(server.getAPIHandlerFromMethodAndPath('GET', '/test2')).toEqual(handler2);
+    expect(server.getAPIHandlerFromMethodAndPath('GET', '/test2')).toEqual(handler2);
+    expect(server.getAPIHandlerFromMethodAndPath('GET', '/test2a')).toEqual(handler2);
+
+    expect(server.getAPIHandlerFromMethodAndPath('GET', '/test3')).toEqual(handler3);
+    expect(server.getAPIHandlerFromMethodAndPath('POST', '/test3')).toEqual(handler3);
+
+    expect(server.getAPIHandlerFromMethodAndPath('POST', '/test4')).toEqual(handler4);
+    expect(server.getAPIHandlerFromMethodAndPath('GET', '/test4')).toEqual(handler4);
+    expect(server.getAPIHandlerFromMethodAndPath('POST', '/test4a')).toEqual(handler4);
+    expect(server.getAPIHandlerFromMethodAndPath('GET', '/test4a')).toEqual(handler4);
+  });
+
+  it('should return null if the method and path dont match', () => {
+    expect(server.getAPIHandlerFromMethodAndPath('POST', '/test1')).toBeNull();
+    expect(server.getAPIHandlerFromMethodAndPath('POST', '/test20')).toBeNull();
+    expect(server.getAPIHandlerFromMethodAndPath('PUT', '/test2')).toBeNull();
+    expect(server.getAPIHandlerFromMethodAndPath('GET', '/test4b')).toBeNull();
+  });
+});
+
+describe('onAPIRequest', () => {
+  //Too many third party requirements.
 });
