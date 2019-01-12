@@ -236,12 +236,12 @@ describe('getString', () => {
   let rGet = new APIRequest(server, 'GET', '/test', req);
 
   it('should return the string out of the data', () => {
-    expect(rPost.getString('lorem', 64)).toStrictEqual('lorem');
+    expect(rPost.getString('lorem', 64)).toStrictEqual('ipsum');
     expect(rPost.getString('dolor.sit', 64)).toStrictEqual('amet');
     expect(rPost.getString('that.was.deep', 64)).toStrictEqual('Yeah I know');
 
-    expect(rGet.getString('accepted', 64)).toStrictEqual('accepted');
-    expect(rGet.getString('blance', 64)).toStrictEqual('7896.457');
+    expect(rGet.getString('accepted', 64)).toStrictEqual('checked');
+    expect(rGet.getString('balance', 64)).toStrictEqual('7896.457');
   });
 
   it('should check the maxLength against the string', () => {
@@ -281,14 +281,14 @@ describe('hasInteger', () => {
     expect(rGet.hasInteger('id')).toStrictEqual(true);
   });
 
-  it('return false if the item is not a double', () => {
+  it('return false if the item is not an integer', () => {
     expect(rPost.hasInteger('lorem')).toStrictEqual(false);
-    expect(rPost.getInteger('balance')).toStrictEqual(false);
-    expect(rPost.getInteger('missing')).toStrictEqual(false);
+    expect(rPost.hasInteger('balance')).toStrictEqual(false);
+    expect(rPost.hasInteger('missing')).toStrictEqual(false);
 
-    expect(rGet.getInteger('accepted')).toStrictEqual(false);
-    expect(rGet.getInteger('balance')).toStrictEqual(false);
-    expect(rGet.getInteger('missing')).toStrictEqual(false);
+    expect(rGet.hasInteger('accepted')).toStrictEqual(false);
+    expect(rGet.hasInteger('balance')).toStrictEqual(false);
+    expect(rGet.hasInteger('missing')).toStrictEqual(false);
   });
 });
 
@@ -304,12 +304,12 @@ describe('hasDouble', () => {
   });
 
   it('return false if the item is not a double', () => {
-    expect(rPost.getDouble('lorem')).toStrictEqual(false);
-    expect(rPost.getDouble('dolor.sit')).toStrictEqual(false);
-    expect(rPost.getDouble('boolTrue')).toStrictEqual(false);
+    expect(rPost.hasDouble('lorem')).toStrictEqual(false);
+    expect(rPost.hasDouble('dolor.sit')).toStrictEqual(false);
+    expect(rPost.hasDouble('boolTrue')).toStrictEqual(false);
 
-    expect(rGet.getDouble('accepted')).toStrictEqual(false);
-    expect(rGet.getDouble('cars')).toStrictEqual(false);
+    expect(rGet.hasDouble('accepted')).toStrictEqual(false);
+    expect(rGet.hasDouble('cars')).toStrictEqual(false);
   });
 });
 
@@ -324,10 +324,10 @@ describe('hasBool', () => {
   });
 
   it('return false if the item is not a bool', () => {
-    expect(rPost.getBool('lorem')).toStrictEqual(false);
-    expect(rPost.getBool('dolor.sit')).toStrictEqual(false);
-    expect(rGet.getBool('id')).toStrictEqual(false);
-    expect(rGet.getBool('cars')).toStrictEqual(false);
+    expect(rPost.hasBool('lorem')).toStrictEqual(false);
+    expect(rPost.hasBool('dolor.sit')).toStrictEqual(false);
+    expect(rGet.hasBool('id')).toStrictEqual(false);
+    expect(rGet.hasBool('cars')).toStrictEqual(false);
   });
 });
 
@@ -340,33 +340,33 @@ describe('hasString', () => {
     expect(rPost.hasString('dolor.sit', 64)).toStrictEqual(true);
     expect(rPost.hasString('that.was.deep', 64)).toStrictEqual(true);
 
-    expect(rGet.getString('accepted', 64)).toStrictEqual(true);
-    expect(rGet.getString('blance', 64)).toStrictEqual(true);
+    expect(rGet.hasString('accepted', 64)).toStrictEqual(true);
+    expect(rGet.hasString('balance', 64)).toStrictEqual(true);
   });
 
   it('should return false if the string length exceeds max length', () => {
-    expect(rPost.getString('lorem', 5)).toStrictEqual(false);
-    expect(rPost.getString('lorem', 3)).toStrictEqual(false);
-    expect(rPost.getString('dolor.sit', 3)).toStrictEqual(false);
-    expect(rPost.getString('that.was.deep', 3)).toStrictEqual(false);
+    expect(rPost.hasString('lorem', 5)).toStrictEqual(true);
+    expect(rPost.hasString('lorem', 3)).toStrictEqual(false);
+    expect(rPost.hasString('dolor.sit', 3)).toStrictEqual(false);
+    expect(rPost.hasString('that.was.deep', 3)).toStrictEqual(false);
 
-    expect(rGet.getString('accepted', 7)).toStrictEqual(false);
-    expect(rGet.getString('accepted', 6)).toStrictEqual(false);
+    expect(rGet.hasString('accepted', 7)).toStrictEqual(true);
+    expect(rGet.hasString('accepted', 6)).toStrictEqual(false);
   });
 
   it('return false if the string isnt in the object', () => {
-    expect(rPost.getString('test', 64)).toStrictEqual(false);
-    expect(rPost.getString('test2', 64)).toStrictEqual(false);
+    expect(rPost.hasString('test', 64)).toStrictEqual(false);
+    expect(rPost.hasString('test2', 64)).toStrictEqual(false);
 
-    expect(rGet.getString('test', 64)).toStrictEqual(false);
-    expect(rGet.getString('test4', 64)).toStrictEqual(false);
+    expect(rGet.hasString('test', 64)).toStrictEqual(false);
+    expect(rGet.hasString('test4', 64)).toStrictEqual(false);
   });
 
   it('return true for empty strings if they are allowed, false if they arent', () => {
-    expect(rPost.getString('blank', 32)).toStrictEqual(false);
-    expect(rPost.getString('blank', 32, true)).toStrictEqual(true);
+    expect(rPost.hasString('blank', 32)).toStrictEqual(false);
+    expect(rPost.hasString('blank', 32, true)).toStrictEqual(true);
 
-    expect(rGet.getString('empty', 32)).toStrictEqual(false);
-    expect(rGet.getString('empty', 32, true)).toStrictEqual(true);
+    expect(rGet.hasString('empty', 32)).toStrictEqual(false);
+    expect(rGet.hasString('empty', 32, true)).toStrictEqual(true);
   });
 });
