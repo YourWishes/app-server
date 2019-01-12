@@ -106,6 +106,12 @@ export class ServerModule extends Module {
     let { config } = this.app;
 
     //Configuration defaults
+
+    if(config.isHeroku()) {
+      //Heroku only configuration
+      this.port = config.has('port') ? parseInt(config.get('port')) : 3000;
+    }
+
     if(config.has(CONFIG_IP)) {
       if(!net.isIP(config.get(CONFIG_IP))) throw new Error('Invalid IP Address in Server Configuration.');
       this.ip = config.get(CONFIG_IP);
