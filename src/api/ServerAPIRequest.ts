@@ -21,17 +21,35 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-import { Response } from 'express';
+import { Request } from 'express';
+import { ServerModule } from './../module/';
+import { APIRequest } from '@yourwishes/app-api';
 
-export const RESPONSE_OK = 200;
+export class ServerAPIRequest extends APIRequest {
+  server:ServerModule;
+  method:string;
+  req:Request;
 
-export const RESPONSE_INTERNAL_ERROR = 500;
+  constructor(server:ServerModule, method:string, path:string, req:Request) {
+    super(server, path);
+    if(!req) throw new Error("Invalid Request");
 
-export interface APIResponse {
-  code:number,
-  data:any
-}
+    this.method = method.toUpperCase();
+    this.req = req;
+  }
 
-export const sendResponse = (response:APIResponse, res:Response) => {
-  res.status(response.code).json(response.data);
+  getData() {
+    let data = this.req.body || {};
+    if(this.method === "GET") data = this.req.query || data;
+    return data;
+  }
+  
+  //Headers
+  hasHeader(header:string) {
+    return this.req && typeof this.req.get(header) !== typeof undefined
+  }
+
+  getHeader(header:string) {
+    return this.req.get(header);
+  }
 }

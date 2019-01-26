@@ -1,8 +1,9 @@
 import { App } from '@yourwishes/app-base';
+import { RESPONSE_OK } from '@yourwishes/app-api';
 import { IServerApp } from './../app/';
 import { ServerModule } from './ServerModule';
 
-import { APIHandler, RESPONSE_OK, APIRequest, APIResponse } from './../api/';
+import { ServerAPIHandler, ServerAPIRequest, ServerAPIResponse } from './../api/';
 
 import * as fs from 'fs';
 
@@ -16,12 +17,12 @@ class DummyApp extends App implements IServerApp {
   }
 }
 
-class DummyAPIHAndler extends APIHandler {
+class DummyAPIHAndler extends ServerAPIHandler {
   constructor(method:string[]|string='GET', path:string[]|string='/test') {
     super(method, path);
   }
 
-  async onRequest(request:APIRequest):Promise<APIResponse> {
+  async onRequest(request:ServerAPIRequest):Promise<ServerAPIResponse> {
     return { code: RESPONSE_OK, data: 'Testing'  }
   }
 }

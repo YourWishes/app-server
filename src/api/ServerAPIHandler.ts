@@ -23,42 +23,30 @@
 
 import * as express from 'express';
 
-import { APIResponse } from './APIResponse';
-import { APIRequest } from './APIRequest';
+import { APIHandler } from '@yourwishes/app-api';
 
-export abstract class APIHandler {
+import { ServerAPIResponse } from './ServerAPIResponse';
+import { ServerAPIRequest } from './ServerAPIRequest';
+
+export abstract class ServerAPIHandler extends APIHandler {
   methods:string[];
   paths:string[];
 
   constructor(methods:string[]|string, paths:string[]|string) {
-    //Take string and convert to array
-    if(!Array.isArray(methods)) methods = [ methods ];
-    if(!Array.isArray(paths)) paths = [ paths ];
+    super(paths);
 
     //Validate
+    if(!Array.isArray(methods)) methods = [ methods ];//String to String[]
     if(!methods.length) throw new Error('You must provide a method.');
-    if(!paths.length) throw new Error('You must provide a path');
-
     methods.forEach(e => {
       if(typeof(e) !== 'string') throw new Error('Methods must be strings');
     });
 
-    paths.forEach(e => {
-      if(typeof(e) !== 'string') throw new Error('Paths must be strings');
-    });
-
     //Set
     this.methods = methods.map(e => e.toUpperCase());
-    this.paths = paths;
   }
 
   hasMethod(method:string):boolean { return this.methods.indexOf(method.toUpperCase()) !== -1; }
-  hasPath(path:string):boolean {
-    for(let i = 0; i < this.paths.length; i++) {
-      if(this.paths[i] === path) return true;
-    }
-    return false;
-  }
 
-  abstract async onRequest(request:APIRequest):Promise<APIResponse>;
+  abstract async onRequest(request:ServerAPIRequest):Promise<ServerAPIResponse>;
 }

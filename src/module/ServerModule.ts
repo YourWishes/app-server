@@ -22,8 +22,9 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 import { Module } from '@yourwishes/app-base';
+import { RESPONSE_INTERNAL_ERROR } from '@yourwishes/app-api';
 import { IServerApp } from './../app/';
-import { APIRequest, APIHandler, sendResponse, RESPONSE_INTERNAL_ERROR, APIResponse } from './../api/';
+import { ServerAPIRequest, ServerAPIHandler, sendResponse, ServerAPIResponse } from './../api/';
 
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
@@ -44,7 +45,7 @@ export const CONFIG_SSL_CERT = `${CONFIG_SSL}.cert`;
 export const CONFIG_HTTPS_PORT = `${CONFIG_SSL}.port`;
 
 
-export const isValidPort = port => !isNaN(port) && port > -1 && port < 65536;
+export const isValidPort = (port:number) => !isNaN(port) && port > -1 && port < 65536;
 
 export class ServerModule extends Module {
   //Server
@@ -54,13 +55,13 @@ export class ServerModule extends Module {
 
   //API
   apiRouter:Router;
-  apiHandlers:APIHandler[]=[];
+  apiHandlers:ServerAPIHandler[]=[];
 
   //Configurations
   ip:string = null;
-  port:Number = 80;
+  port:number = 80;
   ssl:boolean = false;
-  httpsPort:Number = 443;
+  httpsPort:number = 443;
   key:string;
   cert:string;
 
@@ -89,13 +90,13 @@ export class ServerModule extends Module {
     this.express.use(this.apiRouter);
   }
 
-  addAPIHandler(handler:APIHandler) {
+  addAPIHandler(handler:ServerAPIHandler) {
     if(!handler) throw new Error("Invalid API Handler.");
     if(this.apiHandlers.indexOf(handler) !== -1) return;
     this.apiHandlers.push(handler);
   }
 
-  removeAPIHandler(handler:APIHandler) {
+  removeAPIHandler(handler:ServerAPIHandler) {
     if(!handler) throw new Error("Invalid API Handler");
     let index = this.apiHandlers.indexOf(handler);
     if(index === -1) return;
@@ -224,8 +225,8 @@ export class ServerModule extends Module {
     if(!handler) return next();
 
     //This matches, get the result
-    let request = new APIRequest(this, method, path, req);
-    let result:APIResponse;
+    let request = new ServerAPIRequest(this, method, path, req);
+    let result:ServerAPIResponse;
     try {
       result = await handler.onRequest(request);
     } catch(e) {

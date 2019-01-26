@@ -1,9 +1,9 @@
-import { APIHandler, APIResponse, APIRequest } from './';
+import { ServerAPIHandler, ServerAPIResponse, ServerAPIRequest } from './';
 
-class DummyHandler extends APIHandler {
+class DummyHandler extends ServerAPIHandler {
   request:jest.Mock;
 
-  async onRequest(request: APIRequest):Promise<APIResponse> {
+  async onRequest(request: ServerAPIRequest):Promise<ServerAPIResponse> {
     return this.request();
   }
 }
