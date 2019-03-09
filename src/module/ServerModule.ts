@@ -25,6 +25,7 @@ import { Module } from '@yourwishes/app-base';
 import { RESPONSE_INTERNAL_ERROR } from '@yourwishes/app-api';
 import { IServerApp } from './../app/';
 import { ServerAPIRequest, ServerAPIHandler, sendResponse, ServerAPIResponse } from './../api/';
+import { ServerUpdateable } from './../update/';
 
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
@@ -70,6 +71,9 @@ export class ServerModule extends Module {
 
   constructor(app:IServerApp) {
     super(app);
+
+    //Updateable
+    app.updateChecker.addUpdateable(new ServerUpdateable(app));
 
     //Create my express wrapper.
     this.express = express();

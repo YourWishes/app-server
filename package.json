@@ -1,12 +1,10 @@
 {
   "name": "@yourwishes/app-server",
-  "version": "1.1.0",
+  "version": "1.1.5",
   "description": "Server Module for my App framework.",
   "main": "dist/index.js",
   "scripts": {
     "test": "jest",
-    "start": "npm run build:live",
-    "build:live": "nodemon --watch \"src/**/*.ts\" --exec \"ts-node\" src/index.ts",
     "build": "tsc -p ."
   },
   "repository": {
@@ -39,7 +37,7 @@
   },
   "dependencies": {
     "@yourwishes/app-api": "^1.0.0",
-    "@yourwishes/app-base": "^1.1.1",
+    "@yourwishes/app-base": "^1.4.1",
     "body-parser": "^1.18.3",
     "express": "^4.16.4"
   }
