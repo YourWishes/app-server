@@ -77,9 +77,16 @@
   dependencies:
     "@yourwishes/app-base" "^1.1.1"
 
-"@yourwishes/app-base@^1.1.1", "@yourwishes/app-base@^1.4.1":
+"@yourwishes/app-base@^1.1.1":
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/@yourwishes/app-base/-/app-base-1.4.1.tgz#02836e763fa31f791c47cb72f1af781b32888bef"
+  dependencies:
+    cross-fetch "^3.0.1"
+    node-cache "^4.2.0"
+
+"@yourwishes/app-base@^1.4.2":
+  version "1.4.2"
+  resolved "https://registry.yarnpkg.com/@yourwishes/app-base/-/app-base-1.4.2.tgz#0d370603d6db34b140375d33fcaf95724564343a"
   dependencies:
     cross-fetch "^3.0.1"
     node-cache "^4.2.0"
