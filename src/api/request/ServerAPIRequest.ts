@@ -21,8 +21,35 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-export * from './api/';
-export * from './app/';
-export * from './module/';
-export * from './server/';
-export * from './util/';
+import { Request } from 'express';
+import { ServerModule } from './../../module/';
+import { APIRequest } from '@yourwishes/app-api';
+
+export class ServerAPIRequest extends APIRequest {
+  server:ServerModule;
+  method:string;
+  req:Request;
+
+  constructor(server:ServerModule, method:string, path:string, req:Request) {
+    super(server, path);
+    if(!req) throw new Error("Invalid Request");
+
+    this.method = method.toUpperCase();
+    this.req = req;
+  }
+
+  getData() {
+    let data = this.req.body || {};
+    if(this.method === "GET") data = this.req.query || data;
+    return data;
+  }
+
+  //Headers
+  hasHeader(header:string) {
+    return this.req && typeof this.req.get(header) !== typeof undefined
+  }
+
+  getHeader(header:string) {
+    return this.req.get(header);
+  }
+}

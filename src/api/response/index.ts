@@ -21,11 +21,4 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-import { APIResponse } from '@yourwishes/app-api';
-import { Response } from 'express';
-
-export interface ServerAPIResponse extends APIResponse {}
-
-export const sendResponse = (response:APIResponse, res:Response) => {
-  res.status(response.code).json(response.data);
-}
+export * from './ServerAPIResponse';

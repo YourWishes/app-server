@@ -1,4 +1,4 @@
-import { ServerAPIHandler, ServerAPIResponse, ServerAPIRequest } from './';
+import { ServerAPIHandler, ServerAPIResponse, ServerAPIRequest } from './../';
 
 class DummyHandler extends ServerAPIHandler {
   request:jest.Mock;

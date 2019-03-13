@@ -71,22 +71,13 @@
     "@types/express-serve-static-core" "*"
     "@types/mime" "*"
 
-"@yourwishes/app-api@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@yourwishes/app-api/-/app-api-1.0.0.tgz#91a62af662d578e37820615e3c586b87d082ee69"
-  dependencies:
-    "@yourwishes/app-base" "^1.1.1"
+"@yourwishes/app-api@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@yourwishes/app-api/-/app-api-1.1.0.tgz#e44fa62fe69fbeb17f61717f9eb3ce2fae21d567"
 
-"@yourwishes/app-base@^1.1.1":
-  version "1.4.1"
-  resolved "https://registry.yarnpkg.com/@yourwishes/app-base/-/app-base-1.4.1.tgz#02836e763fa31f791c47cb72f1af781b32888bef"
-  dependencies:
-    cross-fetch "^3.0.1"
-    node-cache "^4.2.0"
-
-"@yourwishes/app-base@^1.4.2":
-  version "1.4.2"
-  resolved "https://registry.yarnpkg.com/@yourwishes/app-base/-/app-base-1.4.2.tgz#0d370603d6db34b140375d33fcaf95724564343a"
+"@yourwishes/app-base@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@yourwishes/app-base/-/app-base-2.0.0.tgz#faca1fc6665aa1b0d99dfa75c839210543258bd0"
   dependencies:
     cross-fetch "^3.0.1"
     node-cache "^4.2.0"

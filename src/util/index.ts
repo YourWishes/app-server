@@ -21,8 +21,12 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-export * from './api/';
-export * from './app/';
-export * from './module/';
-export * from './server/';
-export * from './util/';
+import * as net from 'net';
+
+export const isValidPort = (port:number) => !isNaN(port) && port > -1 && port < 65536;
+
+export const getAddressInfoHuman = (add:net.AddressInfo|string):string => {
+  if(typeof add === typeof '') return add as string;
+  let { port, address } = add as net.AddressInfo;
+  return `${address}:${port}`;
+}

@@ -21,12 +21,10 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-import * as express from 'express';
-
 import { APIHandler } from '@yourwishes/app-api';
 
-import { ServerAPIResponse } from './ServerAPIResponse';
-import { ServerAPIRequest } from './ServerAPIRequest';
+import { ServerAPIResponse } from './../response/';
+import { ServerAPIRequest } from './../request/';
 
 export abstract class ServerAPIHandler extends APIHandler {
   methods:string[];
