@@ -1,6 +1,6 @@
 {
   "name": "@yourwishes/app-server",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Server Module for my App framework.",
   "main": "dist/index.js",
   "scripts": {
@@ -37,7 +37,7 @@
   },
   "dependencies": {
     "@yourwishes/app-api": "^1.1.0",
-    "@yourwishes/app-base": "^2.0.0",
+    "@yourwishes/app-base": "^2.0.1",
     "body-parser": "^1.18.3",
     "express": "^4.16.4"
   }
