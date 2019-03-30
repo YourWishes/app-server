@@ -75,9 +75,9 @@
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@yourwishes/app-api/-/app-api-1.1.0.tgz#e44fa62fe69fbeb17f61717f9eb3ce2fae21d567"
 
-"@yourwishes/app-base@^2.0.1":
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/@yourwishes/app-base/-/app-base-2.0.1.tgz#85cf0092869ad23e499d4266dc805628116caadb"
+"@yourwishes/app-base@^2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@yourwishes/app-base/-/app-base-2.0.2.tgz#7de6806e1ce72a668e50ac616634f3d6af12e9a9"
   dependencies:
     cross-fetch "^3.0.1"
     node-cache "^4.2.0"
