@@ -26,7 +26,7 @@ import { ServerModule } from './../../module/';
 import { APIRequest } from '@yourwishes/app-api';
 
 export class ServerAPIRequest extends APIRequest {
-  server:ServerModule;
+  owner:ServerModule;
   method:string;
   req:Request;
 
