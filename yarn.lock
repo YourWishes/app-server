@@ -95,7 +95,7 @@
   resolved "https://registry.yarnpkg.com/@yourwishes/app-api/-/app-api-1.1.0.tgz#e44fa62fe69fbeb17f61717f9eb3ce2fae21d567"
   integrity sha512-LoRZivIAjIMnSbslMpzUx4bfBuCjrBrpfKabjlcGvB3zkoxUi4fp7VQtbiMcAJiSYTbBA+QUtJ5YQXabqr7YpA==
 
-"@yourwishes/app-base@^2.0.3":
+"@yourwishes/app-base@^2.0.10":
   version "2.0.10"
   resolved "https://registry.yarnpkg.com/@yourwishes/app-base/-/app-base-2.0.10.tgz#c0fdcde797e609671462f2c215e1b044d66a0acf"
   integrity sha512-snqd8mLtnylKEpciswgIKATMcTCxBdQ+XKTkzmnDkWp6PMw5T1laiMUVuAII4VpQRUQwMAMZZcsuE12b3/X4lA==
