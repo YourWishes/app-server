@@ -134,6 +134,10 @@ export class Server {
   }
 
   async destroy() {
+    await this.stop();
+  }
+
+  async stop() {
     if(this.http) {
       await new Promise((resolve, reject) => {
         this.http.close(e => e ? reject(e) : resolve())

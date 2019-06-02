@@ -1,6 +1,6 @@
 {
   "name": "@yourwishes/app-server",
-  "version": "2.0.5",
+  "version": "2.1.0",
   "description": "Server Module for my App framework.",
   "main": "dist/index.js",
   "scripts": {
@@ -25,17 +25,17 @@
   },
   "homepage": "https://github.com/YourWishes/app-server#readme",
   "devDependencies": {
-    "@types/jest": "^23.3.10",
-    "jest": "^23.6.0",
-    "ts-jest": "^23.10.5",
-    "typescript": "^3.2.2"
+    "@types/jest": "^24.0.13",
+    "jest": "^24.8.0",
+    "ts-jest": "^24.0.2",
+    "typescript": "^3.5.1"
   },
   "dependencies": {
     "@types/body-parser": "^1.17.0",
     "@types/express": "^4.16.0",
-    "@yourwishes/app-api": "^1.1.0",
-    "@yourwishes/app-base": "^2.0.10",
+    "@yourwishes/app-api": "^1.1.1",
+    "@yourwishes/app-base": "^2.1.1",
     "body-parser": "^1.18.3",
-    "express": "^4.16.4"
+    "express": "^4.17.1"
   }
 }
