@@ -32,6 +32,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as net from 'net';
 
+import { NextHandleFunction } from 'connect';
 import { Express } from 'express';
 
 export const CONFIG_IP = 'server.ip';
@@ -50,6 +51,10 @@ export class Server {
   http:http.Server;
   https:https.Server;
 
+  //Next Functions
+  jsonParser:NextHandleFunction;
+  urlParser:NextHandleFunction;
+
   //Configurations
   ip:string = null;
   port:number = 80;
@@ -66,14 +71,17 @@ export class Server {
     this.express = express();
 
     //Setup express to support JSON Encoded bodies
-    this.express.use(bodyParser.json({
-      type:'application/json'
-    }));
+    this.jsonParser = bodyParser.json({
+      type:'application/json',
+      verify: (req, res, buf, encoding) => req['rawBody'] = buf.toString(encoding)
+    });
+    this.express.use(this.jsonParser);
 
     //Allow URL Encoded bodies
-    this.express.use(bodyParser.urlencoded({
+    this.urlParser = bodyParser.urlencoded({
       extended: true
-    }));
+    });
+    this.express.use(this.urlParser);
   }
 
   async init():Promise<void> {
