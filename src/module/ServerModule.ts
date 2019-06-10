@@ -23,9 +23,9 @@
 
 import { Module, NPMPackage } from '@yourwishes/app-base';
 import { IAPIOwner } from '@yourwishes/app-api';
-import { IServerApp } from './../app/';
-import { Server } from './../server/';
-import { ServerAPI } from './../api/';
+import { IServerApp } from '~app';
+import { Server } from '~server';
+import { ServerAPI } from '~api';
 
 export class ServerModule extends Module implements IAPIOwner {
   app:IServerApp;

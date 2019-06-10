@@ -22,7 +22,7 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 import { IApp } from '@yourwishes/app-base';
-import { ServerModule } from './../module/';
+import { ServerModule } from '~module';
 
 export interface IServerApp extends IApp {
   server:ServerModule;

@@ -22,7 +22,7 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 import { Request } from 'express';
-import { ServerModule } from './../../module/';
+import { ServerModule } from '~module';
 import { APIRequest } from '@yourwishes/app-api';
 
 export class ServerAPIRequest extends APIRequest {

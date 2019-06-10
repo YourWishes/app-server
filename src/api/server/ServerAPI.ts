@@ -25,7 +25,7 @@ import { RESPONSE_INTERNAL_ERROR } from '@yourwishes/app-api';
 import * as express from 'express';
 import { Router, Request, Response, NextFunction } from 'express';
 
-import { ServerModule } from './../../module/';
+import { ServerModule } from '~module';
 import { ServerAPIRequest, ServerAPIHandler, ServerAPIResponse } from './../';
 
 export class ServerAPI {

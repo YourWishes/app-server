@@ -21,8 +21,8 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-import { ServerModule } from './../module/';
-import { isValidPort, getAddressInfoHuman } from './../util/';
+import { ServerModule } from '~module';
+import { isValidPort, getAddressInfoHuman } from '~util';
 
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
