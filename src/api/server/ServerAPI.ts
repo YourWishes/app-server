@@ -36,10 +36,14 @@ export class ServerAPI {
   apiHandlers:ServerAPIHandler[]=[];
 
   constructor(module:ServerModule) {
+    if(!module) throw new Error(`Invalid ServerModule.`);
     this.module = module;
 
     //Create our API Router
     this.apiRouter = express.Router();
+  }
+
+  async init() {
     this.apiRouter.all('*', (req,res,next) => this.onAPIRequest(req,res,next));
     this.module.server.express.use(this.apiRouter);
   }

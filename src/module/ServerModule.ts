@@ -43,6 +43,7 @@ export class ServerModule extends Module implements IAPIOwner {
   }
 
   async init():Promise<void> {
+    await this.api.init();
     await this.server.init();
 
     if(this.autoStart) {
